@@ -41,3 +41,24 @@ function set_up() {
     pre_frames: pre_frames,
   };
 }
+function image_gif_creation(array_results) {
+  let canvas_size,
+    max_iterations,
+    frames_per_worker,
+    pre_frames = set_up();
+  let frame_size = canvas_size.height * canvas_size.width * 3;
+
+  for (let i = 0; i < array_results.length; i++) {
+    for (let j = 0; j < frames_per_worker; j++) {
+      let idx = i * frames_per_worker + j;
+      let image = array_results[i].slice(j * frame_size, (j + 1) * frame_size);
+      create_image.save_image(
+        image,
+        canvas_size.width,
+        canvas_size.height,
+        "/mandelbrot" + String(idx).padStart(3, "0") + ".png"
+      );
+    }
+  }
+  create_image.create_gif(canvas_size.width, canvas_size.height, "/mandelbrot");
+}
